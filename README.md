@@ -1,5 +1,20 @@
 # Artificial Intelligence Course - Assignment 1
 
+## Problem Statement
+
+In this assignment, you are required to write a Prolog program that manages customer orders and provides information on boycotted items and their alternatives. The program should answer questions about customers and their orders and assist customers in finding alternative products to boycotted items.
+
+## Facts (data.pl file)
+
+You must use the provided `data.pl` file, which contains facts about customers, items, orders, boycotted companies, and their alternatives. For example:
+
+```prolog
+customer(CustID, CustUserName).
+item(ItemName, CompanyName, Price).
+order(CustID, OrderID, [Items]).
+boycott_company(CompanyName, Justification).
+alternative(ItemName, AlternativeItem).
+```
 ## Required Predicates
 
 1. **List all orders of a specific customer:** `list_orders(CustomerUserName, OrdersList)`
