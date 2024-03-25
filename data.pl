@@ -170,14 +170,3 @@ getNumOfItems(CustomerName, OrderID, Count) :-
 
 isBoycott(X) :-
     boycott_company(X , _).
-
-calculateTotalPrice([Item|Rest], TotalPrice) :-
-    item(Item, _, Price),
-    calculateTotalPrice(Rest, RestPrice),
-    TotalPrice is Price + RestPrice.
-
-calcPriceOfOrder(CustomerName, OrderID, TotalPrice) :-
-    customer(CustomerID, CustomerName),
-    order(CustomerID, OrderID, Items),
-    calculateTotalPrice(Items, TotalPrice).
-
