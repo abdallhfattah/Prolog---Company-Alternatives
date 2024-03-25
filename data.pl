@@ -160,9 +160,6 @@ boycott_company('Americana', 'Americana Group sold in 2016 to businessman Mohame
 boycott_company('Mondelez International', 'Mondelez International Inc.  on Nov. 10(2020) announced a seed investment in Torr FoodTech, an early stage company based in israel that has developed proprietary technology Mondelez said brings real, simple ingredients together to offer multi-textural, sensorial experiences.').
 boycott_company('Mars', 'Mars will support israeli start-ups and the formation of companies, and will work together with leading israeli academic institutions, such as the Hebrew University, the Weizmann Institute, the Technion, Migall and Tel Hai College, among others, to further Foodtech innovations.').
 
-
-
-
 getNumOfItems(CustomerName, OrderID, Count) :-
     customer(CustomerID, CustomerName),
     order(CustomerID, OrderID, Items),
