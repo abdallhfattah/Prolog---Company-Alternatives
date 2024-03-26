@@ -177,3 +177,6 @@ calcPriceOfOrder(CustomerName, OrderID, TotalPrice) :-
     customer(CustomerID, CustomerName),
     order(CustomerID, OrderID, Items),
     calculateTotalPrice(Items, TotalPrice).
+
+whyToBoycott(CompanyName, Justification) :-
+    boycott_company(CompanyName, Justification).
