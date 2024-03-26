@@ -159,32 +159,3 @@ boycott_company('Henkel', 'Henkel invests in israeli technology namely by invest
 boycott_company('Americana', 'Americana Group sold in 2016 to businessman Mohamed Al Abbar, He is recognized for his strong ties with israel, as well as his donations and support').
 boycott_company('Mondelez International', 'Mondelez International Inc.  on Nov. 10(2020) announced a seed investment in Torr FoodTech, an early stage company based in israel that has developed proprietary technology Mondelez said brings real, simple ingredients together to offer multi-textural, sensorial experiences.').
 boycott_company('Mars', 'Mars will support israeli start-ups and the formation of companies, and will work together with leading israeli academic institutions, such as the Hebrew University, the Weizmann Institute, the Technion, Migall and Tel Hai College, among others, to further Foodtech innovations.').
-
-getNumOfItems(CustomerName, OrderID, Count) :-
-    customer(CustomerID, CustomerName),
-    order(CustomerID, OrderID, Items),
-    length(Items, Count).
-
-isBoycott(X) :-
-    boycott_company(X , _).
-
-isBoycott(Item) :-
-    item(Item, Company, _),
-    boycott_company(Company, _).
-
-calculateTotalPrice([Item|Rest], TotalPrice) :-
-    item(Item, _, Price),
-    calculateTotalPrice(Rest, RestPrice),
-    TotalPrice is Price + RestPrice.
-
-calcPriceOfOrder(CustomerName, OrderID, TotalPrice) :-
-    customer(CustomerID, CustomerName),
-    order(CustomerID, OrderID, Items),
-    calculateTotalPrice(Items, TotalPrice).
-
-whyToBoycott(CompanyName, Justification) :-
-    boycott_company(CompanyName, Justification).
-
-whyToBoycott(Item, Justification):-
-    item(Item, Company, _),
-    boycott_company(Company, Justification).
