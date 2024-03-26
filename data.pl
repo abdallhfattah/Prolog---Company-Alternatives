@@ -168,6 +168,10 @@ getNumOfItems(CustomerName, OrderID, Count) :-
 isBoycott(X) :-
     boycott_company(X , _).
 
+isBoycott(Item) :-
+    item(Item, Company, _),
+    boycott_company(Company, _).
+
 calculateTotalPrice([Item|Rest], TotalPrice) :-
     item(Item, _, Price),
     calculateTotalPrice(Rest, RestPrice),
