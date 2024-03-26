@@ -30,13 +30,31 @@ whyToBoycott(Item, Justification):-
     boycott_company(Company, Justification).
 
 removeBoycottItemsFromAnOrder(Username, OrderID, NewList):-
-    order(Username, OrderID, Items),
+    customer(CustomerID, Username),
+    order(CustomerID, OrderID, Items),
     removeBoycottItems(Items, NewList).
 
 removeBoycottItems([], []).
 removeBoycottItems([Item|Rest], NewList):-
     isBoycott(Item),
-    !,
     removeBoycottItems(Rest, NewList).
 removeBoycottItems([Item|Rest], [Item|NewList]) :-
     removeBoycottItems(Rest, NewList).
+
+alternativeItem(Item, AltItem) :-
+    alternative(Item, AltItem).
+
+% Predicate to replace boycotted items in an order
+replaceBoycottItemsFromAnOrder(Username, OrderID, NewList) :-
+    customer(CustomerID, Username),
+    order(CustomerID, OrderID, Items),
+    replaceBoycottItems(Items, NewList).
+
+replaceBoycottItems([], []).
+replaceBoycottItems([Item|Rest], [NewItem|NewRest]) :-
+    (   isBoycott(Item),
+        alternativeItem(Item, AltItem)
+    ->  NewItem = AltItem
+    ;    NewItem = Item
+    ),
+    replaceBoycottItems(Rest, NewRest).
