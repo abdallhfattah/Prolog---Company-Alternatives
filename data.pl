@@ -184,3 +184,7 @@ calcPriceOfOrder(CustomerName, OrderID, TotalPrice) :-
 
 whyToBoycott(CompanyName, Justification) :-
     boycott_company(CompanyName, Justification).
+
+whyToBoycott(Item, Justification):-
+    item(Item, Company, _),
+    boycott_company(Company, Justification).
