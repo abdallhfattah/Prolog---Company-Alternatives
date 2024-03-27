@@ -58,3 +58,54 @@ replaceBoycottItems([Item|Rest], [NewItem|NewRest]) :-
     ;    NewItem = Item
     ),
     replaceBoycottItems(Rest, NewRest).
+    
+
+getTheDifferenceInPriceBetweenItemAndAlternative(Item, Alternative, DiffPrice) :-
+    item(Item, _, Price1),
+    alternative(Item, Alternative),
+    item(Alternative, _, Price2),
+    DiffPrice is Price1 - Price2.
+
+calcPriceAfterReplacingBoycottItemsFromAnOrder(Username, OrderID, NewList, TotalPrice) :-
+    order(CustomerID, OrderID, Items),
+    customer(CustomerID, Username),
+    replaceBoycottItems(Items, NewList),
+    calculateTotalPrice(NewList, TotalPrice).
+
+replaceBoycottItems([], []).
+replaceBoycottItems([Item|Rest], [NewItem|NewRest]) :-
+    (   alternative(Item, NewItem)
+    ;   item(Item, Company, _) , boycott_company(Company, _) , alternative(Item, NewItem) % If the item is boycotted
+    ;   NewItem = Item 
+    ),
+    replaceBoycottItems(Rest, NewRest).
+
+calculateTotalPrice([], 0).
+calculateTotalPrice([Item|Items], TotalPrice) :-
+    item(Item, _, Price),
+    calculateTotalPrice(Items, RestPrice),
+    TotalPrice is Price + RestPrice.
+
+getTheDifferenceInPriceBetweenItemAndAlternative(Item, Alternative, DiffPrice) :-
+    item(Item, _, Price1),
+    alternative(Item, Alternative),
+    item(Alternative, _, Price2),
+    DiffPrice is Price1 - Price2.
+
+add_item(ItemName, CompanyName, Price) :-
+    assert(item(ItemName, CompanyName, Price)).
+
+remove_item(ItemName, CompanyName, Price) :-
+    retract(item(ItemName, CompanyName, Price)).
+
+add_alternative(ItemName, AlternativeItem) :-
+    assert(alternative(ItemName, AlternativeItem)).
+
+remove_alternative(ItemName, AlternativeItem) :-
+    retract(alternative(ItemName, AlternativeItem)).
+    
+add_boycott_company(CompanyName, Justification) :-
+    assert(boycott_company(CompanyName, Justification)).
+
+remove_boycott_company(CompanyName, Justification) :-
+    retract(boycott_company(CompanyName, Justification)).
