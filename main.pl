@@ -1,5 +1,48 @@
 :-consult(data).
 
+
+%1. List all orders of a customer
+
+list_orders(CustomerName, Orders) :-
+    customer(CustomerId, CustomerName),
+    list_orders_helper(CustomerId, Orders).
+
+list_orders_helper(_, []).
+
+list_orders_helper(CustomerId, [Order|Rest]) :-
+    order(CustomerId, _, Order),
+    list_orders_helper(CustomerId, Rest).
+
+%2. Get number of orders of a customer
+
+countOrdersOfCustomer(CustomerName, Count) :-
+    customer(CustomerId, CustomerName),
+    count_orders_helper(CustomerId, 1,Count).
+
+count_orders_helper(_, Count, Count).
+count_orders_helper(CustomerId, AccCount, Count) :-
+    order(CustomerId, _, _),
+    NewAccCount is AccCount + 1,
+    order(NextCustomerId, _, _),
+    NextCustomerId \= CustomerId, % Check if the next order belongs to a different customer
+    !, % Cut to stop further backtracking
+    Count = NewAccCount. % Stop counting, unify Count with the current count
+count_orders_helper(CustomerId, AccCount, Count) :-
+    order(CustomerId, _, _),
+    NewAccCount is AccCount + 1,
+    count_orders_helper(CustomerId, NewAccCount, Count).
+
+
+% 3.List all items in a specific customer order given cust id and order
+% id
+
+getItemsInOrderById(CustomerName, OrderId, Items) :-
+    customer(CustomerID, CustomerName),
+    order(CustomerID, OrderId, Items).
+
+
+
+
 getNumOfItems(CustomerName, OrderID, Count) :-
     customer(CustomerID, CustomerName),
     order(CustomerID, OrderID, Items),
@@ -58,7 +101,7 @@ replaceBoycottItems([Item|Rest], [NewItem|NewRest]) :-
     ;    NewItem = Item
     ),
     replaceBoycottItems(Rest, NewRest).
-    
+
 
 getTheDifferenceInPriceBetweenItemAndAlternative(Item, Alternative, DiffPrice) :-
     item(Item, _, Price1),
@@ -76,7 +119,7 @@ replaceBoycottItems([], []).
 replaceBoycottItems([Item|Rest], [NewItem|NewRest]) :-
     (   alternative(Item, NewItem)
     ;   item(Item, Company, _) , boycott_company(Company, _) , alternative(Item, NewItem) % If the item is boycotted
-    ;   NewItem = Item 
+    ;   NewItem = Item
     ),
     replaceBoycottItems(Rest, NewRest).
 
@@ -103,7 +146,7 @@ add_alternative(ItemName, AlternativeItem) :-
 
 remove_alternative(ItemName, AlternativeItem) :-
     retract(alternative(ItemName, AlternativeItem)).
-    
+
 add_boycott_company(CompanyName, Justification) :-
     assert(boycott_company(CompanyName, Justification)).
 
